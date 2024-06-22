@@ -41,6 +41,7 @@ export default function App() {
   )
 }
 
+// The Tabs Part
 function TabsWrapper({ tabs, getTabNumber }) {
   return (
     <div className="mb-2 flex gap-3">
@@ -66,12 +67,26 @@ function Tab({ tabNumber, getTabNumber }) {
   )
 }
 
+// The Content Part
+
 function TabContent({ item }) {
+  const [showDetails, setShowDetails] = useState(true)
+
+  const handleShowDetails = () => {
+    setShowDetails(!showDetails)
+  }
   return (
     <div className="bg-[#edf2ff] p-8 rounded-xl">
       <h4 className="text-xl mb-4 text-[#364fc7]">{item.summary}</h4>
+
+      {showDetails && <p>{item.details}</p>}
       <div className="flex justify-between mt-4 mb-6">
-        <button className="bg-none underline text-blue-600 text-sm">details</button>
+        <button
+          className="bg-none underline text-blue-600 text-sm"
+          onClick={handleShowDetails}
+        >
+          {showDetails ? 'Hide Details' : 'Show Details'}
+        </button>
 
         <div className="flex items-center gap-2">
           <span> ❤️</span>
