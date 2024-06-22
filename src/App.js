@@ -34,6 +34,7 @@ export default function App() {
       <TabsWrapper
         tabs={tabs}
         getTabNumber={getTabNumber}
+        currentTab={currentTab}
       />
 
       {/* TabsContent */}
@@ -46,7 +47,7 @@ export default function App() {
 }
 
 // The Tabs Part
-function TabsWrapper({ tabs, getTabNumber }) {
+function TabsWrapper({ tabs, getTabNumber, currentTab }) {
   return (
     <div className="mb-2 flex gap-3">
       {tabs.map(tab => (
@@ -54,16 +55,22 @@ function TabsWrapper({ tabs, getTabNumber }) {
           key={tab.tabNum}
           tabNumber={tab.tabNum}
           getTabNumber={getTabNumber}
+          currentTab={currentTab}
         />
       ))}
     </div>
   )
 }
 
-function Tab({ tabNumber, getTabNumber }) {
+function Tab({ tabNumber, getTabNumber, currentTab }) {
+  const style = {
+    backgroundColor: currentTab === tabNumber && 'blue',
+    color: currentTab === tabNumber && 'white'
+  }
   return (
     <button
-      className="tab-styles"
+      className={`tab-styles`}
+      style={style}
       onClick={() => getTabNumber(tabNumber)}
     >
       Tab
