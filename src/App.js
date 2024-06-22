@@ -23,12 +23,12 @@ const content = [
 
 export default function App() {
   const [tabs, setTabs] = useState(content)
-  const [activeTab, setActiveTab] = useState(tabs[0])
+  const [currentTab, setCurrentTab] = useState(1)
 
-  const getTabNumber = currentTabNumber => {
-    const currentTab = tabs.find(tab => tab.tabNum === currentTabNumber)
-    setActiveTab(currentTab)
+  const getTabNumber = currentTabClicked => {
+    setCurrentTab(currentTabClicked)
   }
+
   return (
     <main>
       <TabsWrapper
@@ -36,7 +36,11 @@ export default function App() {
         getTabNumber={getTabNumber}
       />
 
-      <TabContent item={activeTab} />
+      {/* TabsContent */}
+      <TabsContent
+        tabs={tabs}
+        currentTab={currentTab}
+      />
     </main>
   )
 }
@@ -68,15 +72,37 @@ function Tab({ tabNumber, getTabNumber }) {
 }
 
 // The Content Part
+function TabsContent({ currentTab, tabs }) {
+  return (
+    <>
+      {tabs.map(item => (
+        <ActiveTabContent
+          item={item}
+          key={item.tabNum}
+          currentTab={currentTab}
+        />
+      ))}
+    </>
+  )
+}
 
-function TabContent({ item }) {
+function ActiveTabContent({ item, currentTab }) {
+  // Local States, Local to the Component [Each of the Component instance of course]
   const [showDetails, setShowDetails] = useState(true)
+  const [likes, setLikes] = useState(0)
 
   const handleShowDetails = () => {
     setShowDetails(!showDetails)
   }
+
+  const handleLike = currentLike => {
+    if (currentLike === 'one') setLikes(likes + 1)
+    else setLikes(likes + 4)
+  }
+
+  const hide = 'hidden'
   return (
-    <div className="bg-[#edf2ff] p-8 rounded-xl">
+    <div className={`bg-[#edf2ff] p-8 rounded-xl ${item.tabNum !== currentTab && hide}`}>
       <h4 className="text-xl mb-4 text-[#364fc7]">{item.summary}</h4>
 
       {showDetails && <p>{item.details}</p>}
@@ -89,9 +115,19 @@ function TabContent({ item }) {
         </button>
 
         <div className="flex items-center gap-2">
-          <span> ❤️</span>
-          <button className="bg-[#f03e3e] text-white py-1 px-2 rounded leading-none">+</button>
-          <button className="bg-[#f03e3e] text-white py-1 px-2 rounded leading-none">+++</button>
+          <span>{likes} ❤️</span>
+          <button
+            className="bg-[#f03e3e] text-white py-1 px-2 rounded leading-none"
+            onClick={() => handleLike('one')}
+          >
+            +
+          </button>
+          <button
+            className="bg-[#f03e3e] text-white py-1 px-2 rounded leading-none"
+            onClick={() => handleLike('more')}
+          >
+            +++
+          </button>
         </div>
       </div>
 
