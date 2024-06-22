@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tab-styles {
+  @apply py-2 px-4 border-[1px] bg-[#edf2ff] text-base font-bold text-[#364fc7] transition-colors duration-300 ease-in-out   hover:bg-blue-800 hover:text-white active:bg-blue-800 active:text-white;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 48px 96px;
+  position: relative;
+  color: #444;
+}
+
+.toggle {
+  position: absolute;
+  right: 0;
+  background: none;
+  font-size: 30px;
+  padding: 4px;
+}
