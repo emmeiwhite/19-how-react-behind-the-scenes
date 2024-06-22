@@ -23,44 +23,53 @@ const content = [
 
 export default function App() {
   const [tabs, setTabs] = useState(content)
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState(tabs[0])
 
+  const getTabNumber = currentTabNumber => {
+    const currentTab = tabs.find(tab => tab.tabNum === currentTabNumber)
+    setActiveTab(currentTab)
+  }
   return (
-    <div>
-      <TabsWrapper tabs={tabs} />
+    <main>
+      <TabsWrapper
+        tabs={tabs}
+        getTabNumber={getTabNumber}
+      />
+
+      <TabContent item={activeTab} />
+    </main>
+  )
+}
+
+function TabsWrapper({ tabs, getTabNumber }) {
+  return (
+    <div className="mb-2 flex gap-3">
+      {tabs.map(tab => (
+        <Tab
+          key={tab.tabNum}
+          tabNumber={tab.tabNum}
+          getTabNumber={getTabNumber}
+        />
+      ))}
     </div>
   )
 }
 
-function TabsWrapper({ tabs }) {
+function Tab({ tabNumber, getTabNumber }) {
   return (
-    <div>
-      <div className="mb-2 flex gap-3">
-        {tabs.map(tab => (
-          <Tab key={tab.tabNum} />
-        ))}
-      </div>
-    </div>
+    <button
+      className="tab-styles"
+      onClick={() => getTabNumber(tabNumber)}
+    >
+      Tab
+    </button>
   )
-}
-
-function Tab() {
-  return <button className="tab-styles">Tab</button>
 }
 
 function TabContent({ item }) {
-  const [showDetails, setShowDetails] = useState(true)
-  const [likes, setLikes] = useState(0)
-
-  function handleInc() {
-    setLikes(likes + 1)
-  }
-
   return (
     <div className="bg-[#edf2ff] p-8 rounded-xl">
       <h4 className="text-xl mb-4 text-[#364fc7]">{item.summary}</h4>
-      {showDetails && <p className="text-lg">{item.details}</p>}
-
       <div className="flex justify-between mt-4 mb-6">
         <button className="bg-none underline text-blue-600 text-sm">details</button>
 
